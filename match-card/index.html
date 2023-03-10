@@ -56,6 +56,7 @@
   </div>
  </div>
  <script>
+  confirm('Please match the card of the same type. Click Ok to continue');
   let openCard = [];
   let trumpCard = document.querySelector('.trump-card').parentElement.outerHTML;
   let uniqueCard = [{"key":0,"primaryImg":"rYAfD","category":"1919"},{"key":1,"primaryImg":"NMmRh","category":"1919"},{"key":2,"primaryImg":"ZTpEj","category":"1920"},{"key":3,"primaryImg":"YGKGz","category":"1920"},{"key":4,"primaryImg":"BsBX","category":"1921"},{"key":5,"primaryImg":"USyKgr","category":"1921"},{"key":6,"primaryImg":"pfALHo","category":"1922"},{"key":7,"primaryImg":"ItSv","category":"1922"},{"key":8,"primaryImg":"RFFwHB","category":"1923"},{"key":9,"primaryImg":"hgblsI","category":"1923"},{"key":10,"primaryImg":"EdFj","category":"1924"},{"key":11,"primaryImg":"aizk","category":"1924"},{"key":12,"primaryImg":"vxoby","category":"1925"},{"key":13,"primaryImg":"pals0y","category":"1925"},{"key":14,"primaryImg":"dbubo","category":"1926"},{"key":15,"primaryImg":"qscyc","category":"1926"},{"key":16,"primaryImg":"lavoj","category":"1927"},{"key":17,"primaryImg":"gempH","category":"1927"}];
@@ -68,13 +69,15 @@
    console.log(`Hurry, Time is running out ${time > 9 ? time : '0'+time}`)
    document.querySelector('.running_time').innerHTML = time < 9 ? `Seconds : 0${time}` : `Seconds : ${time}`;
    if(document.querySelectorAll('.trump-card.disabled').length ==  document.querySelectorAll('.trump-card').length){
+     let userResponse = confirm(`You had taken ${time} seconds to match all the cards. Do you want to Restart?`);
+     if(userResponse){
+       location.reload();
+      }
     clearInterval(result)
-    let userResponse = confirm(`You had taken ${time} seconds to match all the cards. Do you want to Restart?`);
-    if(userResponse){
-      location.reload();
-    }
    }
   }, 1000);
+
+  // clearInterval(result)
 
   for (i = 1; i <= 17; i++) {
    document.querySelector('.row').innerHTML = document.querySelector('.row').innerHTML + trumpCard
@@ -107,8 +110,8 @@
     // console.log(card.dataset.key, card.dataset.img, card.dataset.category)
     if (openCard.length == 2) { // change open card value
      splice = openCard.splice(0, 1)
-     console.log(splice)
-     console.log(document.querySelector(`[data-key="${splice[0].key}"]`))
+    //  console.log(splice)
+    //  console.log(document.querySelector(`[data-key="${splice[0].key}"]`))
      document.querySelector(`[data-key="${splice[0].key}"]`).classList.remove('active');
     }
     openCard.push({"key":card.dataset.key, "category": card.dataset.category})
@@ -117,11 +120,13 @@
    if(openCard[1]){
      if(openCard[0].category == openCard[1].category){
       // console.log(document.querySelector(`[data-key="${openCard[0].key}"]`), document.querySelector(`[data-key="${openCard[1].key}"]`))
+      document.querySelector('body').style.pointerEvents = 'none'
 
       setTimeout(() => {
         document.querySelector(`[data-key="${openCard[0].key}"]`).classList.add('disabled')
         document.querySelector(`[data-key="${openCard[1].key}"]`).classList.add('disabled')
         openCard = []
+        document.querySelector('body').style.pointerEvents = '';
       }, 500);
     }
    }
