@@ -21,7 +21,7 @@ h1 {
 
 #game-board {
     display: grid;
-    grid-template-columns: repeat(5, 100px);
+    grid-template-columns: repeat(3, 100px);
     grid-gap: 10px;
 }
 
@@ -30,6 +30,10 @@ h1 {
     height: 100px;
     background-color: #3498db;
     cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>
 
@@ -39,7 +43,7 @@ h1 {
     <div id="game-board"></div>
     <script>
 const gameBoard = document.getElementById('game-board');
-const gridSize = 5; // 5x5 grid
+const gridSize = 3; // 5x5 grid
 const squares = [];
 
 function getRandomColor() {
@@ -53,13 +57,14 @@ function createSquares() {
     const baseColor = getRandomColor();
     const differentColor = shadeColor(baseColor, 10);
 
-    const differentSquareIndex = Math.floor(Math.random() * gridSize * 3);
+    const differentSquareIndex = Math.floor(Math.random() * gridSize * gridSize );
 
     for (let i = 0; i < gridSize * gridSize; i++) {
         const square = document.createElement('div');
         square.classList.add('square');
+        square.innerHTML = i + 1;
         square.style.backgroundColor = i === differentSquareIndex ? differentColor : baseColor;
-        square.addEventListener('click', () => {
+square.addEventListener('click', () => {
             if (i === differentSquareIndex) {
                 alert('Congratulations! You found the different color!');
                 resetGame();
