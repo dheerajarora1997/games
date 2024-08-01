@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find the Different Color Game - By Dheeraj Arora</title>
+    <style>body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(5, 100px);
+    grid-gap: 10px;
+}
+
+.square {
+    width: 100px;
+    height: 100px;
+    background-color: #3498db;
+    cursor: pointer;
+}
+</style>
+
+</head>
+<body>
+    <h1>Find the Different Color - <a target="_blank" href="https://www.linkedin.com/in/dheerajarora1997/">Dheeraj Arora</a></h1>
+    <div id="game-board"></div>
+    <script>
+const gameBoard = document.getElementById('game-board');
+const gridSize = 5; // 5x5 grid
+const squares = [];
+
+function getRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r},${g},${b})`;
+}
+
+function createSquares() {
+    const baseColor = getRandomColor();
+    const differentColor = shadeColor(baseColor, 10);
+
+    const differentSquareIndex = Math.floor(Math.random() * gridSize * 3);
+
+    for (let i = 0; i < gridSize * gridSize; i++) {
+        const square = document.createElement('div');
+        square.classList.add('square');
+        square.style.backgroundColor = i === differentSquareIndex ? differentColor : baseColor;
+        square.addEventListener('click', () => {
+            if (i === differentSquareIndex) {
+                alert('Congratulations! You found the different color!');
+                resetGame();
+            } else {
+                alert('Try again!');
+            }
+        });
+        squares.push(square);
+        gameBoard.appendChild(square);
+    }
+}
+
+function shadeColor(color, percent) {
+    const [r, g, b] = color.match(/\d+/g).map(Number);
+    const t = percent < 0 ? 0 : 255;
+    const p = Math.abs(percent) / 100;
+    const R = Math.round((t - r) * p + r);
+    const G = Math.round((t - g) * p + g);
+    const B = Math.round((t - b) * p + b);
+    return `rgb(${R},${G},${B})`;
+}
+
+function resetGame() {
+    squares.forEach(square => gameBoard.removeChild(square));
+    squares.length = 0;
+    createSquares();
+}
+
+createSquares();
+</script>
+</body>
+</html>
